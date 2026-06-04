@@ -1,11 +1,6 @@
-import { useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar.jsx';
-import FeaturedCard from './components/FeaturedCard.jsx';
 import Footer from './components/Footer.jsx';
-import Cardgrid from './components/Cardgrid.jsx';
-import Card from './components/Card.jsx';
-import SearchBar from './components/SearchBar.jsx';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 

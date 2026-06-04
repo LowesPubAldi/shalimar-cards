@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 
 function Navbar () {
   return (
-    <nav classname="navbar">
+    <nav className="navbar">
       <h1>Shalimar Cards</h1>
 
-      <div classname="nav-links">
+      <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/catalog">Catalog</Link>
         <Link to="/about">About</Link>

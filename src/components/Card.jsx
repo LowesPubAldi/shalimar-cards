@@ -1,8 +1,9 @@
 function Card ({ card }) {
     return (
-        <div>
+        <div className="card">
+            <img src={card.card_images[0].image_url} alt={card.name} /> 
             <h3>{card.name}</h3>
-            <p>{card.game}</p>
+            <p>{card.type}</p>
         </div>
     );
 }
