@@ -7,6 +7,14 @@
   pointer-events: none;
 }
 
+body {
+  background-color: #e5e5e5;
+}
+
+h1 {
+  color: cyan;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -35,4 +43,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card-grid {
+  display: flex;
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  margin: 16px;
+  padding: 16px;
 }
