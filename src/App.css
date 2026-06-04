@@ -45,6 +45,19 @@ h1 {
   }
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+
+}
+
 .card-grid {
   display: flex;
   gap: 16px;
