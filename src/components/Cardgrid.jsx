@@ -64,7 +64,7 @@ function Cardgrid ({ search = '' }) {
 
     return (
         <>
-        <select 
+        <select className="sort-select"
         value={sortOrder}
         onChange={(event) => setSortOrder(event.target.value)}>
             <option value="">Sort by</option>
