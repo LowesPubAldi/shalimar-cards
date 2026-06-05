@@ -12,16 +12,13 @@ function Home() {
                 <FeaturedCard/>
         </div>
 
-        <div className="hero-animation">
-        
-        </div>
-
         <div className="hero-search">
         <SearchBar
         search={search} 
         setSearch={setSearch}
         />
             </div>
+
         </div>
         <CardGrid search={search} />
         </>

@@ -12,7 +12,7 @@ function Cardgrid ({ search = '' }) {
         const fetchCards = async () => {
             try {
                 const response = await fetch(
-                    "https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0"
+                    "https://db.ygoprodeck.com/api/v7/cardinfo.php?num=40&offset=0"
                 );
             if (!response.ok) {
                 throw new Error('Failed to fetch cards');
