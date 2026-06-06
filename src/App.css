@@ -76,6 +76,17 @@ input {
   font-size: 16px;
 }
 
+.search-bar-container {
+  display: Flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-icon {
+  font-size: 18px;
+  color: #1f4f8f;
+}
+
 .hero-search input {
   width: 350px;
   padding: 12px;
@@ -183,20 +194,6 @@ input {
   text-align: left;
 }
 
-/* ANIMATIONS */
-
-/* @keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 /* Responsiveness */
 
 @media (max-width: 768px) {
@@ -254,4 +251,23 @@ input {
     width: 100%;
     max-width: 320px;
   }
+}
+
+/* PAGE CONTENT */
+
+.page-content {
+  max-width: 900px;
+  margin: 48px auto;
+  padding: 0 24px;
+}
+
+/* FOOTER */
+
+.footer {
+  text-align: center;
+  padding: 24px 0;
+  margin-top: 32px;
+  color: #1f4f8f;
+  font-size: 16px;
+  font-weight: 600;
 }

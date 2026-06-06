@@ -1,6 +1,10 @@
+import {FaSearch} from "react-icons/fa"
+
 function SearchBar ({ search, setSearch }) {
     return (
-        <div>
+        <div className="search-bar-container">
+            <FaSearch className="search-icon"/>
+            
             <input 
             type="text" 
             placeholder="Search Cards..." 

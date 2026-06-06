@@ -1,6 +1,6 @@
 function About () {
     return ( 
-    <div>
+    <div className="page-content">
     <h1>About Shalimar Cards</h1>
 <p>
   Shalimar Cards is a React project built using the YGOProDeck API.

@@ -1,6 +1,6 @@
 function Catalog () {
     return (
-    <div>
+    <div className="page-content">
     <h1>Catalog</h1>
 <p>
   Browse hundreds of Yu-Gi-Oh! cards pulled from the YGOProDeck API.
