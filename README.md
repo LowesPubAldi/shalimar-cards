@@ -1,70 +1,97 @@
-# Getting Started with Create React App
+# Shalimar Cards
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Shalimar Cards is a React-based Yu-Gi-Oh! card browser built around the YGOProDeck API. The project focuses on fast browsing, searchable catalog views, and lightweight card detail pages with enough structure to feel like a real product instead of a classroom prototype.
 
-## Available Scripts
+## Live Demo
 
-In the project directory, you can run:
+[shalimar-cards.vercel.app](https://shalimar-cards.vercel.app/)
 
-### `npm start`
+## Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Home
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Home page](./screenshots/home.png)
 
-### `npm test`
+### Catalog
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Catalog page](./screenshots/catalog.png)
 
-### `npm run build`
+### Card Details
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Card details page](./screenshots/card_14558127.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## At A Glance
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Built as a class project, then refined into a portfolio-ready front-end build
+- Focused on browse-state UX: search, filters, sorting, pagination, and preserved route context
+- Designed to show practical React work instead of only static UI composition
 
-### `npm run eject`
+## What It Does
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Browse live Yu-Gi-Oh! card data from the YGOProDeck API
+- Search cards by name from both Home and Catalog views
+- Filter the catalog by type and attribute
+- Sort card results alphabetically or by ATK
+- Navigate paginated catalog results with URL-persisted state
+- Open card detail pages that preserve the originating browse context
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Current Highlights
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- URL-backed browse state for search, filters, sort, and page selection
+- Cached catalog pages and cached card detail responses for faster revisits
+- Loading skeletons and styled error states for catalog and detail flows
+- Route-aware tests covering catalog, detail, grid, and home behavior
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Core User Flow
 
-## Learn More
+1. Start on Home and search for a card by name.
+2. Move into the Catalog for filtering, sorting, and paginated browsing.
+3. Open a card detail page without losing the route context that led there.
+4. Return to the exact filtered view instead of restarting the browse session.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Portfolio Notes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project began as a rough class assignment and was tightened into a more portfolio-ready build by improving the user flow instead of stopping at layout work. The strongest changes were in state persistence, catalog controls, caching, testing, and making the app easier to navigate and explain.
 
-### Code Splitting
+What I wanted this version to demonstrate:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- clear React route and state handling
+- practical API integration with better UX around loading and failure states
+- incremental product thinking beyond a default scaffold
+- the ability to refine an early prototype into something presentation-ready
 
-### Analyzing the Bundle Size
+## What I Improved From The Prototype
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Replaced stock scaffold content with project-specific UI and documentation
+- Persisted search, filter, sort, and page state in the URL
+- Added cached catalog pagination and cached card-detail loading
+- Improved loading, empty, and error states across the main routes
+- Added focused tests around the actual user flow instead of only smoke coverage
 
-### Making a Progressive Web App
+## Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- React
+- React Router
+- Create React App
+- Testing Library + Jest
+- YGOProDeck API
 
-### Advanced Configuration
+## Run Locally
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm install
+npm start
+```
 
-### Deployment
+The app runs at `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Useful Scripts
 
-### `npm run build` fails to minify
+```bash
+npm test -- --watchAll=false --runInBand
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Project Direction
+
+This project started as a class prototype and was tightened into a more portfolio-ready build by improving state handling, search persistence, pagination, caching, loading states, and UI polish. It is still intentionally lightweight, which leaves room for future additions like richer filters, collection tools, or deck-building features.

@@ -1,61 +1,82 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Card from './Card';
 
-function Cardgrid ({ search = '' }) {
-    const [cards, setCards] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [sortOrder, setSortOrder] = useState('');
+const LOADING_CARD_COUNT = 8;
+
+function Cardgrid ({
+    cards = [],
+    loading = false,
+    error = '',
+    search = '',
+    typeFilter = '',
+    attributeFilter = '',
+    sortOrder,
+    onSortChange,
+}) {
+    const [internalSortOrder, setInternalSortOrder] = useState('');
+
+    const activeSortOrder = sortOrder ?? internalSortOrder;
+
+    const handleSortChange = (value) => {
+        if (onSortChange) {
+            onSortChange(value);
+            return;
+        }
+
+        setInternalSortOrder(value);
+    };
 
     
-    useEffect(() => {
-        const fetchCards = async () => {
-            try {
-                const response = await fetch(
-                    "https://db.ygoprodeck.com/api/v7/cardinfo.php?num=40&offset=0"
-                );
-            if (!response.ok) {
-                throw new Error('Failed to fetch cards');
-            }
-            const data = await response.json();
-        
-            setCards(data.data);
-            } catch (err) {
-                setError("Something went wrong. Please try again.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCards();
-    }, []);
-
     const filteredCards = cards.filter((card) =>
-        card.name.toLowerCase().includes(search.toLowerCase())
+        card.name.toLowerCase().includes(search.toLowerCase()) &&
+        (!typeFilter || card.type === typeFilter) &&
+        (!attributeFilter || card.attribute === attributeFilter)
     );
 
     if (loading) {
-        return <p>Loading cards...</p>;
+        return (
+            <>
+            <div className="sort-select skeleton-select" aria-hidden="true" />
+            <div className="card-grid" aria-label="Loading cards">
+                {Array.from({ length: LOADING_CARD_COUNT }, (_, index) => (
+                    <div key={index} className="card card-skeleton" aria-hidden="true">
+                        <div className="card-skeleton-image shimmer-block" />
+                        <div className="card-skeleton-line shimmer-block" />
+                        <div className="card-skeleton-line short shimmer-block" />
+                    </div>
+                ))}
+            </div>
+            </>
+        );
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return (
+            <div className="status-panel error-panel" role="alert">
+                <h2>Catalog unavailable</h2>
+                <p>{error}</p>
+            </div>
+        );
+    }
+
+    if (filteredCards.length === 0) {
+        return <p className="empty-state">No cards matched that search. Try a different name.</p>;
     }
 
     const sortedCards = [...filteredCards].sort((a, b) => {
-        if (sortOrder === 'az'){
+        if (activeSortOrder === 'az'){
             return a.name.localeCompare(b.name);
         }    
     
-        if (sortOrder === 'za'){
+        if (activeSortOrder === 'za'){
             return b.name.localeCompare(a.name);
         }
 
-        if (sortOrder === 'atkHigh') {
+        if (activeSortOrder === 'atkHigh') {
             return (b.atk ?? -1) - (a.atk ?? -1);
         }
 
-        if (sortOrder === 'atkLow') {
+        if (activeSortOrder === 'atkLow') {
             return (a.atk ?? 99999 ) - (b.atk ?? 99999);
         }
 
@@ -65,8 +86,9 @@ function Cardgrid ({ search = '' }) {
     return (
         <>
         <select className="sort-select"
-        value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value)}>
+        aria-label="Sort cards"
+        value={activeSortOrder}
+        onChange={(event) => handleSortChange(event.target.value)}>
             <option value="">Sort by</option>
             <option value="az">A-Z</option>
             <option value="za">Z-A</option>
