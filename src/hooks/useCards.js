@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export const CARDS_PER_PAGE = 60;
 
-function useCards({ page = 1, pageSize = CARDS_PER_PAGE } = {}) {
+function useCards({ page = 1, pageSize = CARDS_PER_PAGE, query = '' } = {}) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -10,10 +10,14 @@ function useCards({ page = 1, pageSize = CARDS_PER_PAGE } = {}) {
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const cacheRef = useRef(new Map());
+  const normalizedQuery = query.trim();
+  const isSearchMode = normalizedQuery.length > 0;
 
   useEffect(() => {
     const controller = new AbortController();
-    const cacheKey = `${page}:${pageSize}`;
+    const cacheKey = isSearchMode
+      ? `search:${normalizedQuery.toLowerCase()}`
+      : `${page}:${pageSize}`;
 
     const loadCards = async () => {
       const cachedPage = cacheRef.current.get(cacheKey);
@@ -33,12 +37,31 @@ function useCards({ page = 1, pageSize = CARDS_PER_PAGE } = {}) {
 
       try {
         const offset = (page - 1) * pageSize;
+        const requestUrl = isSearchMode
+          ? `https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${encodeURIComponent(normalizedQuery)}`
+          : `https://db.ygoprodeck.com/api/v7/cardinfo.php?num=${pageSize}&offset=${offset}`;
         const response = await fetch(
-          `https://db.ygoprodeck.com/api/v7/cardinfo.php?num=${pageSize}&offset=${offset}`,
+          requestUrl,
           { signal: controller.signal }
         );
 
         if (!response.ok) {
+          if (isSearchMode && response.status === 400) {
+            const emptySearchResult = {
+              cards: [],
+              hasNextPage: false,
+              totalPages: 1,
+              totalResults: 0,
+            };
+
+            cacheRef.current.set(cacheKey, emptySearchResult);
+            setCards([]);
+            setHasNextPage(false);
+            setTotalPages(1);
+            setTotalResults(0);
+            return;
+          }
+
           throw new Error('Failed to fetch cards');
         }
 
@@ -48,18 +71,25 @@ function useCards({ page = 1, pageSize = CARDS_PER_PAGE } = {}) {
         const hasNextFromMeta = typeof meta.pages_remaining === 'number'
           ? meta.pages_remaining > 0
           : meta.next_page != null;
-        const nextTotalPages = typeof meta.total_pages === 'number' ? meta.total_pages : page;
-        const nextTotalResults = typeof meta.total_rows === 'number' ? meta.total_rows : nextCards.length;
+        const nextTotalPages = isSearchMode
+          ? 1
+          : (typeof meta.total_pages === 'number' ? meta.total_pages : page);
+        const nextTotalResults = isSearchMode
+          ? nextCards.length
+          : (typeof meta.total_rows === 'number' ? meta.total_rows : nextCards.length);
+        const nextHasNextPage = isSearchMode
+          ? false
+          : (hasNextFromMeta || nextCards.length === pageSize);
 
         cacheRef.current.set(cacheKey, {
           cards: nextCards,
-          hasNextPage: hasNextFromMeta || nextCards.length === pageSize,
+          hasNextPage: nextHasNextPage,
           totalPages: nextTotalPages,
           totalResults: nextTotalResults,
         });
 
         setCards(nextCards);
-        setHasNextPage(hasNextFromMeta || nextCards.length === pageSize);
+        setHasNextPage(nextHasNextPage);
         setTotalPages(nextTotalPages);
         setTotalResults(nextTotalResults);
       } catch (fetchError) {
@@ -80,7 +110,7 @@ function useCards({ page = 1, pageSize = CARDS_PER_PAGE } = {}) {
     loadCards();
 
     return () => controller.abort();
-  }, [page, pageSize]);
+  }, [isSearchMode, normalizedQuery, page, pageSize]);
 
   return { cards, loading, error, hasNextPage, totalPages, totalResults };
 }
