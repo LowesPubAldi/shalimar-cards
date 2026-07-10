@@ -73,4 +73,18 @@ describe('Home', () => {
 
     expect(screen.getByTestId('location-search')).toHaveTextContent('search=ash');
   });
+
+  test('filters cards from the sort panel controls', async () => {
+    renderHome();
+
+    expect(await screen.findByRole('heading', { level: 3, name: /blue-eyes white dragon/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /ash blossom & joyous spring/i })).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/type filter/i), {
+      target: { value: 'Normal Monster' },
+    });
+
+    expect(screen.getByRole('heading', { level: 3, name: /blue-eyes white dragon/i })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { level: 3, name: /ash blossom & joyous spring/i })).not.toBeInTheDocument();
+  });
 });

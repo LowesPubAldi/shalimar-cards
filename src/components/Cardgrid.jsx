@@ -12,6 +12,7 @@ function Cardgrid ({
     attributeFilter = '',
     sortOrder,
     onSortChange,
+    hideSortControl = false,
 }) {
     const [internalSortOrder, setInternalSortOrder] = useState('');
 
@@ -36,7 +37,7 @@ function Cardgrid ({
     if (loading) {
         return (
             <>
-            <div className="sort-select skeleton-select" aria-hidden="true" />
+            {!hideSortControl ? <div className="sort-select skeleton-select" aria-hidden="true" /> : null}
             <div className="card-grid" aria-label="Loading cards">
                 {Array.from({ length: LOADING_CARD_COUNT }, (_, index) => (
                     <div key={index} className="card card-skeleton" aria-hidden="true">
@@ -85,16 +86,18 @@ function Cardgrid ({
 
     return (
         <>
-        <select className="sort-select"
-        aria-label="Sort cards"
-        value={activeSortOrder}
-        onChange={(event) => handleSortChange(event.target.value)}>
-            <option value="">Sort by</option>
-            <option value="az">A-Z</option>
-            <option value="za">Z-A</option>
-            <option value="atkHigh">Atk High-Low</option>
-            <option value="atkLow">Atk Low-High</option>
-        </select>
+        {!hideSortControl ? (
+            <select className="sort-select"
+            aria-label="Sort cards"
+            value={activeSortOrder}
+            onChange={(event) => handleSortChange(event.target.value)}>
+                <option value="">Sort by</option>
+                <option value="az">A-Z</option>
+                <option value="za">Z-A</option>
+                <option value="atkHigh">Atk High-Low</option>
+                <option value="atkLow">Atk Low-High</option>
+            </select>
+        ) : null}
 
         <div className="card-grid">
             {sortedCards.map((card) => (

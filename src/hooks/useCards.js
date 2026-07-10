@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const CARDS_PER_PAGE = 40;
+export const CARDS_PER_PAGE = 60;
 
 function useCards({ page = 1, pageSize = CARDS_PER_PAGE } = {}) {
   const [cards, setCards] = useState([]);

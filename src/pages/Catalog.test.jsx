@@ -71,10 +71,10 @@ describe('Catalog', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch').mockImplementation(async (request) => {
       const requestUrl = String(request);
-      const data = requestUrl.includes('offset=40') ? mockCardsPageTwo : mockCardsPageOne;
-      const meta = requestUrl.includes('offset=40')
-        ? { pages_remaining: 0, next_page: null, total_pages: 2, total_rows: 41 }
-        : { pages_remaining: 1, next_page: 2, total_pages: 2, total_rows: 41 };
+      const data = requestUrl.includes('offset=60') ? mockCardsPageTwo : mockCardsPageOne;
+      const meta = requestUrl.includes('offset=60')
+        ? { pages_remaining: 0, next_page: null, total_pages: 2, total_rows: 61 }
+        : { pages_remaining: 1, next_page: 2, total_pages: 2, total_rows: 61 };
 
       return {
         ok: true,
@@ -95,7 +95,7 @@ describe('Catalog', () => {
     expect(screen.getByLabelText(/attribute/i)).toHaveValue('LIGHT');
     expect(await screen.findByText(/cyber dragon/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/sort cards/i)).toHaveValue('atkHigh');
-    expect(screen.getByText(/showing cards 1-1 of 41 on page 1 of 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/showing cards 1-1 of 61 on page 1 of 2/i)).toBeInTheDocument();
   });
 
   test('writes catalog state back to the URL when controls change', async () => {
