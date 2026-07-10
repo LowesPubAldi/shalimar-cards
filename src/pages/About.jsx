@@ -16,11 +16,13 @@ const highlights = [
 function About () {
     return ( 
     <div className="page-content about-page">
-    <p className="eyebrow">Yu-Gi-Oh! database prototype</p>
-    <h1>About Shalimar Cards</h1>
-<p className="page-lead">
-  Shalimar Cards is a focused Yu-Gi-Oh! browser built to show clean front-end state handling, practical React routing, and a visible step up from an early prototype.
-</p>
+    <section className="about-hero">
+      <p className="eyebrow">Yu-Gi-Oh! database prototype</p>
+      <h1>About Shalimar Cards</h1>
+      <p className="page-lead">
+        Shalimar Cards is a focused Yu-Gi-Oh! browser built to show clean front-end state handling, practical React routing, and a visible step up from an early prototype.
+      </p>
+    </section>
 
 <div className="info-grid">
   {highlights.map((item) => (

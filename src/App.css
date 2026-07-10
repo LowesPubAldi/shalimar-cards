@@ -558,8 +558,11 @@ input {
 /* CARD */
 
 .card {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 190px;
+  min-height: 396px;
   margin: 0 auto;
   border-radius: 12px;
   border: 1px solid #ccc;
@@ -576,7 +579,25 @@ input {
 
 .card h3 {
   font-size: 16px;
-  min-height: 48px;
+  min-height: 44px;
+  margin: 10px 0 6px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card p {
+  margin: 0;
+  line-height: 1.35;
+  min-height: 40px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -781,6 +802,62 @@ input {
   .card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     padding: 10px 16px 22px;
+  }
+
+  .catalog-page .page-content {
+    margin-top: 20px;
+    margin-bottom: 24px;
+    padding: 0 16px;
+  }
+
+  .catalog-page .page-header {
+    gap: 10px;
+  }
+
+  .catalog-page .page-header h1,
+  .catalog-page .page-header p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .catalog-page .page-header .search-bar-container {
+    width: 100%;
+    margin: 0;
+  }
+
+  .catalog-page .catalog-controls-row {
+    gap: 10px;
+  }
+
+  .catalog-page .catalog-controls-row .filter-row {
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+
+  .catalog-page .catalog-controls-row .filter-field {
+    flex: 0 1 220px;
+    min-width: 0;
+  }
+
+  .catalog-page .catalog-controls-row .filter-field select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-page .result-summary {
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  .catalog-page .tablet-render-note {
+    display: block;
+    width: fit-content;
+    max-width: min(560px, 100%);
+    align-self: center;
+    flex: 0 0 auto;
+    text-align: center;
+    margin: 6px auto 0;
   }
 
   .hero-section {
@@ -1005,6 +1082,145 @@ input {
     width: 100%;
     max-width: 320px;
   }
+
+  .catalog-page .page-content {
+    margin: 22px auto 24px;
+    padding: 0 12px;
+  }
+
+  .catalog-page .page-header {
+    gap: 10px;
+  }
+
+  .catalog-page .catalog-controls-row {
+    gap: 10px;
+  }
+
+  .catalog-page .catalog-controls-row .search-bar-container {
+    width: 100%;
+    margin: 0;
+    padding: 8px 12px;
+  }
+
+  .catalog-page .catalog-controls-row .search-bar-container input {
+    font-size: 16px;
+  }
+
+  .catalog-page .filter-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .catalog-page .filter-field,
+  .catalog-page .filter-field select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-page .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 8px 12px 18px;
+  }
+
+  .catalog-page .card {
+    max-width: none;
+    min-height: 286px;
+    padding: 7px;
+    border-radius: 10px;
+  }
+
+  .catalog-page .card img,
+  .catalog-page .card-skeleton-image {
+    height: 166px;
+  }
+
+  .catalog-page .card h3 {
+    font-size: 13.5px;
+    line-height: 1.25;
+    min-height: 34px;
+    margin: 7px 0 3px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .catalog-page .card p {
+    font-size: 11.5px;
+    line-height: 1.28;
+    color: #475569;
+    min-height: 30px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .catalog-page .result-summary {
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+
+  .catalog-page .active-chip-row {
+    margin-top: -6px;
+    margin-bottom: 8px;
+    padding: 0 12px;
+  }
+
+  .catalog-page .pagination-controls {
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .catalog-page .page-number-button {
+    min-width: 36px;
+    padding: 8px 12px;
+  }
+
+  .about-page.page-content {
+    margin: 20px auto 24px;
+    padding: 0 12px;
+  }
+
+  .about-page {
+    gap: 14px;
+  }
+
+  .about-page .about-hero {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+
+  .about-page .about-hero h1 {
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-size: 28px;
+    line-height: 1.12;
+  }
+
+  .about-page .about-hero .page-lead {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .about-page .info-grid {
+    gap: 10px;
+  }
+
+  .about-page .info-card,
+  .about-page .about-notes {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .about-page .info-card h2,
+  .about-page .about-notes h2 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .about-page .info-card p,
+  .about-page .about-notes p {
+    line-height: 1.6;
+  }
 }
 
 @media (max-width: 420px) {
@@ -1031,8 +1247,20 @@ input {
   gap: 16px;
 }
 
+.catalog-controls-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .page-header .search-bar-container {
-  width: fit-content;
+  width: min(640px, 100%);
+  margin: 2px auto 0;
+  padding: 10px 18px;
+}
+
+.page-header .search-bar-container input {
+  font-size: 18px;
 }
 
 .result-summary {
@@ -1040,6 +1268,7 @@ input {
   margin-bottom: 18px;
   color: #475569;
   font-weight: 600;
+  text-align: center;
   animation: fade-up 0.25s ease both;
 }
 
@@ -1119,6 +1348,88 @@ input {
   cursor: not-allowed;
 }
 
+@media (min-width: 1024px) {
+  .catalog-page .catalog-controls-row {
+    display: grid;
+    grid-template-columns: minmax(360px, 1.1fr) minmax(460px, 1fr);
+    gap: 16px;
+    align-items: end;
+  }
+
+  .catalog-page .catalog-controls-row .search-bar-container {
+    margin: 0;
+    width: 100%;
+  }
+
+  .catalog-page .page-content {
+    margin-top: 36px;
+    margin-bottom: 36px;
+  }
+
+  .catalog-page .page-header {
+    gap: 12px;
+  }
+
+  .catalog-page .result-summary {
+    margin-top: 16px;
+    margin-bottom: 14px;
+  }
+
+  .catalog-page .active-chip-row {
+    margin-top: -14px;
+    margin-bottom: 10px;
+  }
+
+  .catalog-page .filter-row {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .catalog-page .filter-field {
+    flex: 1;
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .catalog-page .filter-field span {
+    display: none;
+  }
+
+  .catalog-page .filter-field select {
+    min-height: 52px;
+    font-size: 18px;
+    padding: 10px 14px;
+  }
+
+  .catalog-page .pagination-controls {
+    margin-top: 6px;
+    margin-bottom: 36px;
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 780px) {
+  .catalog-page .page-content {
+    margin-top: 20px;
+    margin-bottom: 24px;
+  }
+
+  .catalog-page .page-header {
+    gap: 8px;
+  }
+
+  .catalog-page .result-summary {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .catalog-page .active-chip-row {
+    margin-top: -10px;
+    margin-bottom: 8px;
+  }
+}
+
 .page-number-list {
   display: flex;
   align-items: center;
@@ -1191,11 +1502,21 @@ input {
 .about-page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 18px;
+}
+
+.about-hero {
+  padding: 22px 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(191, 219, 254, 0.42), transparent 45%),
+    linear-gradient(165deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.9));
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
 }
 
 .eyebrow {
-  margin: 0;
+  margin: 0 0 8px;
   color: #b45309;
   font-size: 13px;
   font-weight: 700;
@@ -1204,7 +1525,7 @@ input {
 }
 
 .page-lead {
-  margin: 0;
+  margin: 8px 0 0;
   max-width: 700px;
   font-size: 18px;
   line-height: 1.6;
@@ -1221,7 +1542,7 @@ input {
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(148, 163, 184, 0.35);
   border-radius: 16px;
-  padding: 24px;
+  padding: 22px;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
 }
 
@@ -1235,6 +1556,92 @@ input {
 .about-notes p {
   margin-bottom: 0;
   line-height: 1.7;
+}
+
+.about-notes p + p {
+  margin-top: 14px;
+}
+
+@media (min-width: 1024px) {
+  .about-page.page-content {
+    max-width: 1080px;
+    margin-top: 34px;
+    margin-bottom: 34px;
+  }
+
+  .about-hero {
+    padding: 28px 32px;
+  }
+
+  .about-hero h1 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 42px;
+    line-height: 1.08;
+  }
+
+  .about-hero .page-lead {
+    max-width: 860px;
+    font-size: 19px;
+  }
+
+  .about-page .info-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .about-page .info-card {
+    min-height: 220px;
+  }
+
+  .about-page .about-notes {
+    padding: 26px 28px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-page.page-content {
+    margin-top: 28px;
+    margin-bottom: 30px;
+    padding: 0 18px;
+  }
+
+  .about-page {
+    gap: 16px;
+  }
+
+  .about-hero {
+    padding: 20px 22px;
+    border-radius: 16px;
+  }
+
+  .about-hero h1 {
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-size: 34px;
+    line-height: 1.12;
+  }
+
+  .about-hero .page-lead {
+    font-size: 17px;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+
+  .about-page .info-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .about-page .info-card,
+  .about-page .about-notes {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .about-page .info-card {
+    min-height: 0;
+  }
 }
 
 .sr-only {

@@ -1,7 +1,29 @@
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import CardGrid from '../components/Cardgrid.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import useCards, { CARDS_PER_PAGE } from '../hooks/useCards.js';
+
+const DESKTOP_BREAKPOINT = 1024;
+const TABLET_BREAKPOINT = 768;
+const MOBILE_PAGE_SIZE = 20;
+const TABLET_PAGE_SIZE = 30;
+
+function getCatalogPageSize() {
+  if (typeof window === 'undefined') {
+    return CARDS_PER_PAGE;
+  }
+
+  if (window.innerWidth < TABLET_BREAKPOINT) {
+    return MOBILE_PAGE_SIZE;
+  }
+
+  if (window.innerWidth >= TABLET_BREAKPOINT && window.innerWidth < DESKTOP_BREAKPOINT) {
+    return TABLET_PAGE_SIZE;
+  }
+
+  return CARDS_PER_PAGE;
+}
 
 const SORT_LABELS = {
   az: 'A-Z',
@@ -36,6 +58,7 @@ function buildVisiblePages(currentPage, totalPages) {
 
 function Catalog () {
     const [searchParams, setSearchParams] = useSearchParams();
+  const [pageSize, setPageSize] = useState(getCatalogPageSize);
 
     const search = searchParams.get('search') ?? '';
     const typeFilter = searchParams.get('type') ?? '';
@@ -43,7 +66,23 @@ function Catalog () {
     const sortOrder = searchParams.get('sort') ?? '';
     const parsedPage = Number(searchParams.get('page') ?? '1');
     const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
-    const { cards, loading, error, hasNextPage, totalPages, totalResults } = useCards({ page, pageSize: CARDS_PER_PAGE });
+    const { cards, loading, error, hasNextPage, totalPages, totalResults } = useCards({
+      page,
+      pageSize,
+      query: search,
+    });
+
+    useEffect(() => {
+      const handleResize = () => {
+        setPageSize(getCatalogPageSize());
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
 
     const typeOptions = Array.from(
       new Set(cards.map((card) => card.type).concat(typeFilter).filter(Boolean))
@@ -69,6 +108,34 @@ function Catalog () {
       setSearchParams(nextParams);
     };
 
+    const unifiedFilterValue = typeFilter
+      ? `type:${typeFilter}`
+      : (attributeFilter ? `attribute:${attributeFilter}` : '');
+
+    const updateUnifiedFilter = (value) => {
+      const nextParams = new URLSearchParams(searchParams);
+
+      nextParams.delete('type');
+      nextParams.delete('attribute');
+      nextParams.delete('page');
+
+      if (value) {
+        const separatorIndex = value.indexOf(':');
+        const filterKey = separatorIndex === -1 ? '' : value.slice(0, separatorIndex);
+        const filterValue = separatorIndex === -1 ? '' : value.slice(separatorIndex + 1);
+
+        if (filterKey === 'type' && filterValue) {
+          nextParams.set('type', filterValue);
+        }
+
+        if (filterKey === 'attribute' && filterValue) {
+          nextParams.set('attribute', filterValue);
+        }
+      }
+
+      setSearchParams(nextParams);
+    };
+
     const clearBrowseState = () => {
       setSearchParams(new URLSearchParams());
     };
@@ -85,7 +152,7 @@ function Catalog () {
       (!typeFilter || card.type === typeFilter) &&
       (!attributeFilter || card.attribute === attributeFilter)
     )).length;
-    const pageStart = visibleCardCount === 0 ? 0 : ((page - 1) * CARDS_PER_PAGE) + 1;
+    const pageStart = visibleCardCount === 0 ? 0 : ((page - 1) * pageSize) + 1;
     const pageEnd = visibleCardCount === 0 ? 0 : pageStart + visibleCardCount - 1;
     const resultSummary = loading
       ? `Loading page ${page} of ${totalPages}.`
@@ -94,36 +161,49 @@ function Catalog () {
         : `Showing cards ${pageStart}-${pageEnd} of ${totalResults} on page ${page} of ${totalPages}.`;
 
     return (
-    <>
+    <section className="catalog-page">
     <div className="page-content page-header">
     <h1>Catalog</h1>
 <p>
   Browse Yu-Gi-Oh! cards pulled from the YGOProDeck API, then filter by name and sort the results.
 </p>
-<SearchBar search={search} setSearch={(value) => updateParam('search', value, true)} />
-<div className="filter-row">
-  <label className="filter-field">
-    <span>Type</span>
-    <select aria-label="Type" value={typeFilter} onChange={(event) => updateParam('type', event.target.value, true)}>
-      <option value="">All types</option>
-      {typeOptions.map((option) => (
-        <option key={option} value={option}>{option}</option>
-      ))}
-    </select>
-  </label>
+<div className="catalog-controls-row">
+  <SearchBar search={search} setSearch={(value) => updateParam('search', value, true)} />
+  <div className="filter-row">
+    <label className="filter-field">
+      <span>Sort</span>
+      <select aria-label="Sort cards" value={sortOrder} onChange={(event) => updateParam('sort', event.target.value)}>
+        <option value="">Sort by</option>
+        <option value="az">A-Z</option>
+        <option value="za">Z-A</option>
+        <option value="atkHigh">Atk High-Low</option>
+        <option value="atkLow">Atk Low-High</option>
+      </select>
+    </label>
 
-  <label className="filter-field">
-    <span>Attribute</span>
-    <select aria-label="Attribute" value={attributeFilter} onChange={(event) => updateParam('attribute', event.target.value, true)}>
-      <option value="">All attributes</option>
-      {attributeOptions.map((option) => (
-        <option key={option} value={option}>{option}</option>
-      ))}
-    </select>
-  </label>
+    <label className="filter-field">
+      <span>Filter</span>
+      <select aria-label="Filter cards" value={unifiedFilterValue} onChange={(event) => updateUnifiedFilter(event.target.value)}>
+        <option value="">Filter by</option>
+        <optgroup label="Type">
+          {typeOptions.map((option) => (
+            <option key={`type-${option}`} value={`type:${option}`}>{option}</option>
+          ))}
+        </optgroup>
+        <optgroup label="Attribute">
+          {attributeOptions.map((option) => (
+            <option key={`attribute-${option}`} value={`attribute:${option}`}>{option}</option>
+          ))}
+        </optgroup>
+      </select>
+    </label>
+  </div>
 </div>
+<p className="tablet-render-note" role="status">
+  Tablet view renders fewer cards for smoother browsing. Use Search to jump to specific cards, or open on desktop to explore more cards at once.
+</p>
+<p className="result-summary">{resultSummary}</p>
 </div>
-<p className="page-content result-summary">{resultSummary}</p>
 {activeChips.length > 0 ? (
   <div className="page-content active-chip-row" aria-label="Active catalog filters">
     {activeChips.map((chip) => (
@@ -154,6 +234,7 @@ function Catalog () {
   attributeFilter={attributeFilter}
   sortOrder={sortOrder}
   onSortChange={(value) => updateParam('sort', value)}
+  hideSortControl
 />
 <div className="pagination-controls page-content">
   <button type="button" onClick={() => updateParam('page', String(page - 1))} disabled={page === 1 || loading}>
@@ -182,7 +263,7 @@ function Catalog () {
     Next
   </button>
 </div>
-</> 
+</section> 
 );
 }
 

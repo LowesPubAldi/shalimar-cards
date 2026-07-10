@@ -42,6 +42,24 @@ Shalimar Cards is a React-based Yu-Gi-Oh! card browser built around the YGOProDe
 - Loading skeletons and styled error states for catalog and detail flows
 - Route-aware tests covering catalog, detail, grid, and home behavior
 
+## Latest Iteration (Today)
+
+- Completed a full responsive polish pass across Home, Catalog, and About using desktop -> tablet -> mobile workflow
+- Refined Catalog controls into a cleaner Search + Sort + unified Filter row and centered result messaging under controls
+- Updated Catalog mobile behavior at 375px to improve browse density:
+	- 20 cards per page on mobile
+	- compact 2-column card grid
+	- tighter card spacing and typography for readability
+- Switched Catalog search to API-backed name querying so known cards (for example, Stardust Dragon and Yubel) surface from the full dataset instead of only the current page slice
+- Implemented About page redesign with a stronger intro hero, better section rhythm, and tuned desktop/tablet/mobile layouts
+- Fixed Catalog test coverage to match current unified filter behavior and current pagination/search logic (Catalog test suite now passing)
+
+What this round reflects:
+
+- Faster execution and stronger UI consistency from breakpoint-first iteration
+- More honest product quality improvements beyond visuals alone: state behavior, search correctness, and test reliability
+- A project that moved from class assignment quality toward a more portfolio-ready standard
+
 ## Core User Flow
 
 1. Start on Home and search for a card by name.

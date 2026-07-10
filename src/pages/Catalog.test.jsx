@@ -91,11 +91,10 @@ describe('Catalog', () => {
     renderCatalog('/catalog?search=cyber&type=Effect%20Monster&attribute=LIGHT&sort=atkHigh');
 
     expect(screen.getByLabelText(/search cards by name/i)).toHaveValue('cyber');
-    expect(screen.getByLabelText(/type/i)).toHaveValue('Effect Monster');
-    expect(screen.getByLabelText(/attribute/i)).toHaveValue('LIGHT');
+    expect(screen.getByLabelText(/filter cards/i)).toHaveValue('type:Effect Monster');
     expect(await screen.findByText(/cyber dragon/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/sort cards/i)).toHaveValue('atkHigh');
-    expect(screen.getByText(/showing cards 1-1 of 61 on page 1 of 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/showing cards 1-1 of 3 on page 1 of 1/i)).toBeInTheDocument();
   });
 
   test('writes catalog state back to the URL when controls change', async () => {
@@ -109,8 +108,8 @@ describe('Catalog', () => {
     fireEvent.change(screen.getByLabelText(/sort cards/i), {
       target: { value: 'az' },
     });
-    fireEvent.change(screen.getByLabelText(/type/i), {
-      target: { value: 'Effect Monster' },
+    fireEvent.change(screen.getByLabelText(/filter cards/i), {
+      target: { value: 'type:Effect Monster' },
     });
 
     expect(screen.getByTestId('location-search')).toHaveTextContent('search=ash');
@@ -169,11 +168,10 @@ describe('Catalog', () => {
       }),
     }));
 
-    renderCatalog('/catalog?search=cyber&type=Effect%20Monster&attribute=LIGHT&sort=atkHigh&page=4');
+    renderCatalog('/catalog?type=Effect%20Monster&attribute=LIGHT&sort=atkHigh&page=4');
 
     expect(await screen.findByText(/cyber dragon/i)).toBeInTheDocument();
     expect(screen.getAllByText('...')).toHaveLength(2);
-    expect(screen.getByRole('button', { name: /search: cyber x/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sort: atk high to low x/i })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /attribute: light x/i }));
@@ -191,8 +189,7 @@ describe('Catalog', () => {
 
     expect(screen.getByTestId('location-search')).toHaveTextContent('');
     expect(screen.getByLabelText(/search cards by name/i)).toHaveValue('');
-    expect(screen.getByLabelText(/type/i)).toHaveValue('');
-    expect(screen.getByLabelText(/attribute/i)).toHaveValue('');
+    expect(screen.getByLabelText(/filter cards/i)).toHaveValue('');
     expect(screen.getByLabelText(/sort cards/i)).toHaveValue('');
   });
 });
